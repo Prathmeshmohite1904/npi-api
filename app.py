@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import pandas as pd
 import pickle
 
@@ -7,6 +8,9 @@ with open("npi_model.pkl", "rb") as f:
     model = pickle.load(f)
 
 app = Flask(__name__)
+
+# ✅ Allow all origins OR restrict to React frontend only
+CORS(app, resources={r"/predict": {"origins": ["http://localhost:3000", "https://dead-fish-production.up.railway.app"]}})
 
 @app.route("/predict", methods=["POST"])
 def predict():
